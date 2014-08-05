@@ -9,7 +9,7 @@ function migrate_maths_migrate_api() {
       ),
     ),
     'migrations' => array(
-      'MigrateDamtpArticle' => array(
+      'MigrateArticle' => array(
         'class_name' => 'MigrateArticle',
         'group_name' => 'damtp',
       )
