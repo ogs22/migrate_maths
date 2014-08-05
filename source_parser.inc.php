@@ -1,8 +1,8 @@
 <?php
 
 // Include QueryPath.
-require_once drupal_get_path('module', 'migrate_damtp') . '/querypath-2.1.2/src/QueryPath/QueryPath.php';
-require_once drupal_get_path('module', 'migrate_damtp') . '/querypath-2.1.2/src/QueryPath/Extension/QPXML.php';
+require_once drupal_get_path('module', 'migrate_maths') . '/querypath-2.1.2/src/QueryPath/QueryPath.php';
+require_once drupal_get_path('module', 'migrate_maths') . '/querypath-2.1.2/src/QueryPath/Extension/QPXML.php';
 
 class SourceParser {
 

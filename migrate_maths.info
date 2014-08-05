@@ -1,0 +1,12 @@
+name = "Migrate from Maths"
+description = "Module to migrate old maths.cam.ac.uk html content to Drupal 7"
+package = "Migration"
+core = 7.x
+
+dependencies[] = migrate
+
+
+#  include the files that contain your Migrate classes 
+files[] = migrate_maths.migrate.inc
+files[] = source_parser.inc.php
+files[] = MigrateArticle.inc.php
