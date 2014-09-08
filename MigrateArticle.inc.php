@@ -9,7 +9,8 @@ class MigrateArticle extends Migration {
   public function __construct() {
     parent::__construct();
  
-    // A map of source HTML filename -> destination node id.
+
+
     $this->map = new MigrateSQLMap($this->machineName,
         array(
           'sourceid' => array(
@@ -20,13 +21,15 @@ class MigrateArticle extends Migration {
         ),
         MigrateDestinationNode::getKeySchema()
     );
+
+    
  
     // The source fields.
     $fields = array(
       'title' => t('Title'),
       'body' => t('Body'),
       'uid' => t('User id'),
-        'facpath' => t('the path')  
+      'facpath' => t('the path')
     );
  
     // Since the base directory of the HTML files can change depending on the
@@ -34,10 +37,11 @@ class MigrateArticle extends Migration {
     // set it using drush vset.
 //    $this->base_dir = variable_get('my_migration_source', '');
  
-    $this->base_dir = '/local/httpd/sites/htdocs-maths';
+    $this->partimp = "undergrad/catam";
+    $this->base_dir = '/local/httpd/sites/htdocs-maths/'.$this->partimp;
 
     // Match HTML files.
-    $regex = '/.*\.html/';
+    $regex = '/.*\.htm/';
  
     // The source of the migration is HTML files from the old site.
     $list_files = new MigrateListFiles(array($this->base_dir), $this->base_dir, $regex);
@@ -53,6 +57,7 @@ class MigrateArticle extends Migration {
     $this->addFieldMapping('body', 'body')
       ->arguments(array('format' => 'full_html'));
     $this->addFieldMapping('path', 'facpath');
+    $this->addFieldMapping('pathauto', FALSE);
     
   }
  
@@ -65,11 +70,11 @@ class MigrateArticle extends Migration {
     $row->uid = 1;
  
     // Create a new SourceParser to handle HTML content.
-    $source_parser = new SourceParser(substr($row->sourceid, 1), $row->filedata);
+    $source_parser = new SourceParser(substr($row->sourceid, 1), $row->filedata,$this);
     $row->body = $source_parser->getBody();
  
     // The title is the filename.
-    $row->facpath = substr($row->sourceid,1);
+    $row->facpath = $this->partimp.'/'.substr($row->sourceid,1);
 //    if (basename($row->sourceid) == "index.html") {
 //        $row->alt[1] = substr(dirname($row->sourceid),1);
 //    }
@@ -80,3 +85,11 @@ class MigrateArticle extends Migration {
     }
   }
 }
+
+
+
+
+
+
+
+

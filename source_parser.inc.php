@@ -18,13 +18,16 @@ class SourceParser {
      * @param $html
      *  The full HTML data as loaded from the file.
      */
-    public function __construct($id, $html) {
+    public function __construct($id, $html,$migration) {
         $this->id = $id;
         $this->html = $html;
+        $this->migration = $migration;
 
         $this->charTransform();
         $this->fixEncoding();
         $this->wrapHTML();
+        $this->rewriteSrc($id);
+        $this->rewriteHref($id);
         $this->initQP();
         $this->stripComments();
     }
@@ -66,6 +69,37 @@ class SourceParser {
         $this->html = $html;
     }
 
+    protected function rewriteSrc($id) {
+        //change the local links and files 
+        //change images and PDFs to /sites/maths/files/pre2014/.....
+        //make sure local html links work by truning off pathauto module
+        $path_parts = pathinfo($id);
+        $html = $this->html;
+        $html = str_ireplace('src="http', 'src-protect="http', $html); // stop ext links being rewriten
+        $html = str_ireplace('src="/', 'src-protect="/', $html); // stop / links being rewritten
+        $html = str_ireplace('src="', 
+        'src="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/',
+         $html); //rewrite paths
+        $html = str_replace('src-protect=', 'src=', $html); // rewrite protected srcs
+
+        $this->html = $html;
+    }
+
+    protected function rewriteHref($id) {
+        $path_parts = pathinfo($id);
+        $html = $this->html;
+        $html = str_ireplace('href="mailto:', 'href-protect="mailto:', $html); // stop mailto links being rewriten
+        $html = str_ireplace('href="http', 'href-protect="http', $html); // stop external links being rewriten
+        $html = str_ireplace('href="/', 'href-protect="/', $html); // stop / links being rewritten
+        $html = preg_replace('/<a(.*)href="([^"]*html)"(.*)>/i','<a$1href-protect="/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert html links
+        $html = preg_replace('/<a(.*)href="([^"]*#*)"(.*)>/i','<a$1href-protect="/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert anchors too
+        
+
+        $html = preg_replace('/<a(.*)href="([^"]*)"(.*)>/i','<a$1href-protect="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //assume all else is pdf/doc etc
+        $html = str_replace('href-protect="', 'href="', $html);  
+        $this->html = $html;
+    }
+
     /**
      * Create the QueryPath object.
      */
@@ -86,6 +120,9 @@ class SourceParser {
 //      $comment->parentNode->removeChild($comment);
 //    }
     }
+
+
+
 
     /**
      * Return the HTML.
@@ -119,5 +156,6 @@ class SourceParser {
 
         return $title;
     }
+
 
 }
