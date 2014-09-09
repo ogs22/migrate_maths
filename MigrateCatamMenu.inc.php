@@ -1,6 +1,12 @@
 <?php
 
-class MigrateArticle extends Migration {
+
+  /*
+  * MENU!!!!
+  *
+  */
+
+class MigrateCatamMenu extends Migration {
   public $base_dir;
  
   /**
@@ -19,17 +25,17 @@ class MigrateArticle extends Migration {
             'not null' => TRUE,
           )
         ),
-        MigrateDestinationNode::getKeySchema()
+        MigrateDestinationMenuLinks::getKeySchema()
     );
 
     
  
     // The source fields.
     $fields = array(
-      'title' => t('Title'),
-      'body' => t('Body'),
-      'uid' => t('User id'),
-      'facpath' => t('the path')
+      'plid' => t('The parent'),
+      'facpath' => t('the path'),
+      'link_title' => t('link title'),
+      'p1' => t('err P1?'),
     );
  
     // Since the base directory of the HTML files can change depending on the
@@ -49,16 +55,21 @@ class MigrateArticle extends Migration {
     $this->source = new MigrateSourceList($list_files, $item_file, $fields);
  
     // The destination is the mynode content type.
-    $this->destination = new MigrateDestinationNode('page');
+    $this->destination = new MigrateDestinationMenuLinks();
  
     // Map the fields, pretty straightforward in this case.
-    $this->addFieldMapping('uid', 'uid');
-    $this->addFieldMapping('title', 'title');
-    $this->addFieldMapping('body', 'body')
-      ->arguments(array('format' => 'full_html'));
-    $this->addFieldMapping('path', 'facpath');
-    $this->addFieldMapping('pathauto', FALSE);
-    
+    $this->addFieldMapping('menu_name')->defaultValue('main-menu');
+    $this->addFieldMapping('plid','plid')->defaultValue(18520);
+    $this->addFieldMapping('link_path','facpath');
+    $this->addFieldMapping('link_title','link_title');
+    $this->addFieldMapping('hidden')->defaultValue(0);
+    $this->addFieldMapping('external')->defaultValue('0');
+    $this->addFieldMapping('expanded')->defaultValue('1');
+    $this->addFieldMapping('customized')->defaultValue('1');
+    $this->addFieldMapping('p1', 'p1')->sourceMigration($this->getMachineName());
+    $this->addFieldMapping('router_path')->defaultValue('node/%');
+
+  //    $this->addFieldMapping('options')->defaultValue('a:1:{s:10:"attributes";a:1:{s:5:"title";s:0:"";}}');
   }
  
   /**
@@ -69,19 +80,23 @@ class MigrateArticle extends Migration {
     // Set to admin for now.
     $row->uid = 1;
  
+    $row->p1 = 18520;
     // Create a new SourceParser to handle HTML content.
     $source_parser = new SourceParser(substr($row->sourceid, 1), $row->filedata,$this);
-    $row->body = $source_parser->getBody();
+    //$row->body = $source_parser->getBody();
  
     // The title is the filename.
     $row->facpath = $this->partimp.'/'.substr($row->sourceid,1);
+
+    //drupal_get_normal_path($row->facpath);
+
 //    if (basename($row->sourceid) == "index.html") {
 //        $row->alt[1] = substr(dirname($row->sourceid),1);
 //    }
     
-    $row->title = $source_parser->getTitle($this->base_dir,$row->path);
-    if ($row->title == "") {
-        $row->title = $row->sourceid;
+    $row->link_title = $source_parser->getTitle($this->base_dir,$row->path);
+    if ($row->link_title == "") {
+        $row->link_title = $row->sourceid;
     }
   }
 }

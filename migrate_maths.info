@@ -9,4 +9,5 @@ dependencies[] = migrate
 #  include the files that contain your Migrate classes 
 files[] = migrate_maths.migrate.inc
 files[] = source_parser.inc.php
-files[] = MigrateArticle.inc.php
+files[] = MigrateCatam.inc.php
+files[] = MigrateCatamMenu.inc.php

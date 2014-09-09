@@ -90,12 +90,16 @@ class SourceParser {
         $html = $this->html;
         $html = str_ireplace('href="mailto:', 'href-protect="mailto:', $html); // stop mailto links being rewriten
         $html = str_ireplace('href="http', 'href-protect="http', $html); // stop external links being rewriten
-        $html = str_ireplace('href="/', 'href-protect="/', $html); // stop / links being rewritten
-        $html = preg_replace('/<a(.*)href="([^"]*html)"(.*)>/i','<a$1href-protect="/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert html links
-        $html = preg_replace('/<a(.*)href="([^"]*#*)"(.*)>/i','<a$1href-protect="/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert anchors too
+        $html = str_ireplace('href="/', 'href-protect="/', $html); // stop absolute links being rewritten
+        $html = preg_replace('/<a(.*)href="([^"]*html)"(.*)>/i',
+            '<a$1href-protect="/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
+        $html = preg_replace('/<a(.*)href="([^"]*#*)"(.*)>/i',
+            '<a$1href-protect="/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert anchors too
         
 
-        $html = preg_replace('/<a(.*)href="([^"]*)"(.*)>/i','<a$1href-protect="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //assume all else is pdf/doc etc
+        $html = preg_replace('/<a(.*)href="([^"]*)"(.*)>/i',
+            '<a$1href-protect="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',
+            $html); //assume all else is pdf/doc etc stored in /sites/www.maths.cam.ac.uk/files/pre2014/
         $html = str_replace('href-protect="', 'href="', $html);  
         $this->html = $html;
     }
