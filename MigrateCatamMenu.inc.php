@@ -34,6 +34,7 @@ class MigrateCatamMenu extends Migration {
     $fields = array(
       'plid' => t('The parent'),
       'facpath' => t('the path'),
+      'nodepath' => t('real node path'),
       'link_title' => t('link title'),
       'p1' => t('err P1?'),
     );
@@ -60,7 +61,7 @@ class MigrateCatamMenu extends Migration {
     // Map the fields, pretty straightforward in this case.
     $this->addFieldMapping('menu_name')->defaultValue('main-menu');
     $this->addFieldMapping('plid','plid')->defaultValue(18520);
-    $this->addFieldMapping('link_path','facpath');
+    $this->addFieldMapping('link_path','nodepath');
     $this->addFieldMapping('link_title','link_title');
     $this->addFieldMapping('hidden')->defaultValue(0);
     $this->addFieldMapping('external')->defaultValue('0');
@@ -88,7 +89,7 @@ class MigrateCatamMenu extends Migration {
     // The title is the filename.
     $row->facpath = $this->partimp.'/'.substr($row->sourceid,1);
 
-    //drupal_get_normal_path($row->facpath);
+    $row->nodepath = drupal_get_normal_path($row->facpath);
 
 //    if (basename($row->sourceid) == "index.html") {
 //        $row->alt[1] = substr(dirname($row->sourceid),1);
