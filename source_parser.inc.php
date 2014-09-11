@@ -66,7 +66,18 @@ class SourceParser {
         $html .= '<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head><body>';
         $html .= $this->html;
         $html .= '</body></html>';
-        $this->html = $html;
+        // Specify configuration
+        $config = array(
+           'indent'         => false,
+           'output-xhtml'   => true,
+           'wrap'           => 400);
+
+        // Tidy
+        $tidy = new tidy;
+        $tidy->parseString($html, $config, 'utf8');
+        $tidy->cleanRepair();
+
+        $this->html = $tidy;
     }
 
     protected function rewriteSrc($id) {
@@ -91,6 +102,9 @@ class SourceParser {
         $html = str_ireplace('href="mailto:', 'href-protect="mailto:', $html); // stop mailto links being rewriten
         $html = str_ireplace('href="http', 'href-protect="http', $html); // stop external links being rewriten
         $html = str_ireplace('href="/', 'href-protect="/', $html); // stop absolute links being rewritten
+        $html = preg_replace('/<a(.*)href="([^"]*pdf)"(.*)>/i',
+            '<a$1href-protect="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
+
         $html = preg_replace('/<a(.*)href="([^"]*html)"(.*)>/i',
             '<a$1href-protect="/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
         $html = preg_replace('/<a(.*)href="([^"]*#*)"(.*)>/i',
@@ -151,11 +165,13 @@ class SourceParser {
         if ($title == "") {
             $title = $this->qp->top('h2')->innerHTML();
         }
-        
+        $title = trim(strip_tags($title)); //remove html crud
         if ($title == "") {
+            $wwwroot = str_replace('/local/httpd/sites/htdocs-maths', '', $basedir);
             $title = $file;
         }
-        $title = trim(strip_tags($title)); //remove html crud
+        echo "'".$title."'\n";
+        
 
 
         return $title;

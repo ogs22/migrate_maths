@@ -79,7 +79,7 @@ class MigrateCatam extends Migration {
 //        $row->alt[1] = substr(dirname($row->sourceid),1);
 //    }
     
-    $row->title = $source_parser->getTitle($this->base_dir,$row->path);
+    $row->title = $source_parser->getTitle($this->base_dir,$row->facpath);
     if ($row->title == "") {
         $row->title = $row->sourceid;
     }
