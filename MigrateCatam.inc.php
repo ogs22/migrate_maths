@@ -2,14 +2,13 @@
 
 class MigrateCatam extends Migration {
   public $base_dir;
- 
+  public $partimp = '';
+  public $maindir = '/local/httpd/sites/htdocs-maths/';
   /**
    * Constructor.
    */
   public function __construct() {
     parent::__construct();
- 
-
 
     $this->map = new MigrateSQLMap($this->machineName,
         array(
@@ -21,9 +20,6 @@ class MigrateCatam extends Migration {
         ),
         MigrateDestinationNode::getKeySchema()
     );
-
-    
- 
     // The source fields.
     $fields = array(
       'title' => t('Title'),
@@ -31,14 +27,8 @@ class MigrateCatam extends Migration {
       'uid' => t('User id'),
       'facpath' => t('the path')
     );
- 
-    // Since the base directory of the HTML files can change depending on the
-    // environment, we keep it in a variable. There is no interface for this,
-    // set it using drush vset.
-//    $this->base_dir = variable_get('my_migration_source', '');
- 
-    $this->partimp = "undergrad/catam";
-    $this->base_dir = '/local/httpd/sites/htdocs-maths/'.$this->partimp;
+
+    $this->base_dir = $this->maindir.$this->partimp;
 
     // Match HTML files.
     $regex = '/.*\.htm/';

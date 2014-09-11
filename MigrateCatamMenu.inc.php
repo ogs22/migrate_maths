@@ -7,6 +7,9 @@
 
 class MigrateCatamMenu extends Migration {
   public $base_dir;
+  public $topnid = 31648; // set manually....
+  public $partimp = '';
+  public $maindir = '/local/httpd/sites/htdocs-maths/';
  
   /**
    * Constructor.
@@ -32,28 +35,19 @@ class MigrateCatamMenu extends Migration {
       'p1' => t('err P1?'),
     );
  
-    // Since the base directory of the HTML files can change depending on the
-    // environment, we keep it in a variable. There is no interface for this,
-    // set it using drush vset.
 
- 
-    $this->partimp = "undergrad/catam";
-    $this->base_dir = '/local/httpd/sites/htdocs-maths/'.$this->partimp;
-
+    $this->base_dir = $this->maindir.$this->partimp;
     // Match HTML files.
     $regex = '/.*\.htm/';
  
-    // The source of the migration is HTML files from the old site.
+    // The source of the migration is HTML files from the old site. // class extended to override filescan order
     $list_files = new mathMigrateListFiles(array($this->base_dir), $this->base_dir, $regex);
     
     $item_file = new MigrateItemFile($this->base_dir);
     $this->source = new MigrateSourceList($list_files, $item_file, $fields);
-    //print_r($this);
-
-    // The destination is the mynode content type.
     $this->destination = new MigrateDestinationMenuLinks();
  
-    // Map the fields, pretty straightforward in this case.
+    // Map the fields
     $this->addFieldMapping('menu_name')->defaultValue('main-menu');
     $this->addFieldMapping('plid', 'ref_parent');
     $this->addFieldMapping('link_path','nodepath');
@@ -67,30 +61,26 @@ class MigrateCatamMenu extends Migration {
     $this->addFieldMapping('p3', 'p3')->sourceMigration($this->getMachineName());
     $this->addFieldMapping('p4', 'p4')->sourceMigration($this->getMachineName());
     $this->addFieldMapping('router_path')->defaultValue('node/%');
-
-  //    $this->addFieldMapping('options')->defaultValue('a:1:{s:10:"attributes";a:1:{s:5:"title";s:0:"";}}');
   }
  
+
+
   /**
    * Prepare a row.
    */
   public function prepareRow($row) {
 
     $row->uid = 1;
- 
     $source_parser = new SourceParser(substr($row->sourceid, 1), $row->filedata,$this);
-
     $row->facpath = $this->partimp.'/'.substr($row->sourceid,1);
-
     $row->parentNID = $this->getParentNid($row->facpath);
-
     $row->ref_parent = $this->getParent($row->parentNID);
     $row->nodepath = drupal_get_normal_path($row->facpath);
-    
     $row->link_title = $source_parser->getTitle($this->base_dir,$row->path);
     if ($row->link_title == "") {
         $row->link_title = $row->sourceid;
     }
+    echo $row->facpath."\n";
   }
 
   public function getParentNid($htmlpath) {
@@ -107,24 +97,24 @@ class MigrateCatamMenu extends Migration {
         $me = array_pop($dirs);
       }
       $rejoin = implode('/',$dirs).'/index.html';
-      echo "\n".$htmlpath." looking for Parent:: ".$rejoin."\n";
+      //echo "\n".$htmlpath." looking for Parent:: ".$rejoin."\n";
       
       if ($rejoin == "undergrad/catam/index.html" or $rejoin == "undergrad/index.html") {
-        $nid = 31648; //top level page for this import
+        $nid = $this->topnid; //top level page for this import
       } else {
 
       $pnodepath = drupal_get_normal_path($rejoin);
       
       if ($pnodepath==$rejoin) {
         $pnodepath = false;
-        echo "No parent found::\n";
+        //echo "No parent found::\n";
         $np = true;
         return false;
       } else {
-        echo "Parent found at:: ".$pnodepath."\n";
+        //echo "Parent found at:: ".$pnodepath."\n";
         $tmp = explode('/', $pnodepath);
         $nid = $tmp[1];
-        echo $nid." - nid\n";
+        //echo $nid." - nid\n";
       }
     }
       return $nid;
@@ -140,39 +130,8 @@ class MigrateCatamMenu extends Migration {
               ->execute()
               ->fetchField();  
 
-
-      echo $mlid." - mlid\n";
+      //echo $mlid." - mlid\n";
       return $mlid;
-  }
-
-  protected function createStub($migration,array $source_id) {
-//   print_r($migration);
-    // if ref_parent is 0, that means it has no parent, so don't create a stub
-  //  if (!$migration->sourceValues->ref_parent) {
-  //    echo "\nstub called but not Creating stub:\n";
-  //    return FALSE;
-  //  }
-    echo "\nCreating stub:\n";
-    $menu_link = array (
-      'menu_name' => 'main-menu',
-      'link_path' => '<front>',
-      'router_path' => 'stub-path',
-      'link_title' => t('Stub for @id', array('@id' => $source_id[0])),
-      'plid' => 36098,
-      'enabled' => 1
-    );
-    $mlid = menu_link_save($menu_link);
-    if ($mlid) {
-      return array($mlid);
-    }
-    else {
-      return FALSE;
-    }
-  }
-
-  protected function getnidtitle($nid) {
-    $node = node_load($nid);
-    return $node->title;
   }
 
 }

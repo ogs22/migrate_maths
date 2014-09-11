@@ -138,10 +138,7 @@ class SourceParser {
 //      $comment->parentNode->removeChild($comment);
 //    }
     }
-
-
-
-
+    
     /**
      * Return the HTML.
      */
@@ -170,7 +167,7 @@ class SourceParser {
             $wwwroot = str_replace('/local/httpd/sites/htdocs-maths', '', $basedir);
             $title = $file;
         }
-        echo "'".$title."'\n";
+        //echo "'".$title."'\n";
         
 
 
