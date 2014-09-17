@@ -8,7 +8,7 @@
 class MigrateCatamMenu extends Migration {
   public $base_dir;
   public $topnid = 31648; // set manually....
-  public $partimp = '';
+  public $partimp = 'undergrad/catam';
   public $maindir = '/local/httpd/sites/htdocs-maths/';
  
   /**
@@ -80,7 +80,7 @@ class MigrateCatamMenu extends Migration {
     if ($row->link_title == "") {
         $row->link_title = $row->sourceid;
     }
-    echo $row->facpath."\n";
+    //echo $row->facpath."\n";
   }
 
   public function getParentNid($htmlpath) {

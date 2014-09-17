@@ -2,7 +2,7 @@
 
 class MigrateCatam extends Migration {
   public $base_dir;
-  public $partimp = '';
+  public $partimp = 'undergrad/catam';
   public $maindir = '/local/httpd/sites/htdocs-maths/';
   /**
    * Constructor.
