@@ -3,7 +3,8 @@ description = "Module to migrate old maths.cam.ac.uk html content to Drupal 7"
 package = "Migration"
 core = 7.x
 
-dependencies[] = migrate
+dependencies[] = "migrate"
+dependencies[] = "migrate_extras"
 
 
 #  include the files that contain your Migrate classes 

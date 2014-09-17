@@ -9,7 +9,7 @@ class MigrateCatamMenu extends Migration {
   public $base_dir;
   public $topnid = 31648; // set manually....
   public $partimp = 'undergrad/catam';
-  public $maindir = '/local/httpd/sites/htdocs-maths/';
+  public $maindir = '/etc/drupal/7/sites/www.maths.cam.ac.uk/files/pre2014/';
  
   /**
    * Constructor.
