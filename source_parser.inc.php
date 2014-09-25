@@ -104,6 +104,12 @@ class SourceParser {
         $html = str_ireplace('href="/', 'href-protect="/', $html); // stop absolute links being rewritten
         $html = preg_replace('/<a(.*)href="([^"]*pdf)"(.*)>/i',
             '<a$1href-protect="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
+       $html = preg_replace('/<a(.*)href="([^"]*ps)"(.*)>/i',
+            '<a$1href-protect="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
+       $html = preg_replace('/<a(.*)href="([^"]*doc)"(.*)>/i',
+            '<a$1href-protect="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
+
+
 
         $html = preg_replace('/<a(.*)href="([^"]*html)"(.*)>/i',
             '<a$1href-protect="/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links

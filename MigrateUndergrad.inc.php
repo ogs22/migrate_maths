@@ -1,9 +1,9 @@
 <?php
 
-class MigrateCatam extends Migration {
+class MigrateUndergrad extends Migration {
   public $base_dir;
-  public $partimp = 'undergrad/catam';
-  public $maindir = '/usr/local/www/cms/drupal/sites/www.maths.cam.ac.uk/files/pre2014/';
+  public $partimp = 'undergrad';
+  public $maindir = '/tmp/www.maths.cam.ac.uk/files/pre2014/';
   /**
    * Constructor.
    */
@@ -31,7 +31,7 @@ class MigrateCatam extends Migration {
     $this->base_dir = $this->maindir.$this->partimp;
 
     // Match HTML files.
-    $regex = '/.*\.htm/';
+    $regex = '/(?!(catam|madeup)).*\.htm/';
  
     // The source of the migration is HTML files from the old site.
     $list_files = new MigrateListFiles(array($this->base_dir), $this->base_dir, $regex);

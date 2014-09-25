@@ -5,11 +5,11 @@
   *
   */
 
-class MigrateCatamMenu extends Migration {
+class MigrateUndergradMenu extends Migration {
   public $base_dir;
-  public $topnid = 176; // set manually....
-  public $partimp = 'undergrad/catam';
-  public $maindir = '/usr/local/www/cms/drupal/sites/www.maths.cam.ac.uk/files/pre2014/';
+  public $topnid = 35848; // set manually....
+  public $partimp = 'undergrad';
+  public $maindir = '/tmp/www.maths.cam.ac.uk/files/pre2014/';
  
   /**
    * Constructor.
@@ -99,7 +99,7 @@ class MigrateCatamMenu extends Migration {
       $rejoin = implode('/',$dirs).'/index.html';
       //echo "\n".$htmlpath." looking for Parent:: ".$rejoin."\n";
       
-      if ($rejoin == "undergrad/catam/index.html" or $rejoin == "undergrad/index.html") {
+      if ($rejoin == "undergrad/index.html" or $rejoin == "index.html") {
         $nid = $this->topnid; //top level page for this import
       } else {
 

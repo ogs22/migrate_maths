@@ -9,12 +9,12 @@ function migrate_maths_migrate_api() {
       ),
     ),
     'migrations' => array(
-      'MigrateCatam' => array(
-        'class_name' => 'MigrateCatam',
+      'MigrateUndergrad' => array(
+        'class_name' => 'MigrateUndergrad',
         'group_name' => 'wwwmaths',
       ),
-      'MigrateCatamMenu' => array(
-        'class_name' => 'MigrateCatamMenu',
+      'MigrateUndergradMenu' => array(
+        'class_name' => 'MigrateUndergradMenu',
         'group_name' => 'wwwmaths',
       )
     ),
