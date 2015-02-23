@@ -3,12 +3,12 @@
 class MigrateCatam extends Migration {
   public $base_dir;
   public $partimp = 'undergrad/catam';
-  public $maindir = '/usr/local/www/cms/drupal/sites/www.maths.cam.ac.uk/files/pre2014/';
+  public $maindir = '/usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014/';
   /**
    * Constructor.
    */
-  public function __construct() {
-    parent::__construct();
+  public function __construct($arguments) {
+    parent::__construct($arguments);
 
     $this->map = new MigrateSQLMap($this->machineName,
         array(
@@ -44,8 +44,8 @@ class MigrateCatam extends Migration {
     // Map the fields, pretty straightforward in this case.
     $this->addFieldMapping('uid', 'uid');
     $this->addFieldMapping('title', 'title');
-    $this->addFieldMapping('body', 'body')
-      ->arguments(array('format' => 'full_html'));
+    $this->addFieldMapping('body', 'body');
+    $this->addFieldMapping('body:format')->defaultValue('full_html');
     $this->addFieldMapping('path', 'facpath');
     $this->addFieldMapping('pathauto', FALSE);
     

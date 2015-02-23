@@ -1,0 +1,17 @@
+rsync -maruvv --exclude-from=/home/ogs22/rsync-exclude.txt  www.maths.cam.ac.uk:/local/httpd/sites/htdocs-maths/undergrad/catam/ /usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014/undergrad/catam
+
+/usr/local/www/drupal/sites/www.maths.cam.ac.uk/modules/migrate_maths/pre-import-cleanup.sh 
+
+cd /usr/local/www/drupal/sites/www.maths.cam.ac.uk/
+
+drush mi MigrateCatam
+// Add Catam index as menu item //
+//edit MigrateCatamMenu add node id (not menu id) of the above as the topnid
+
+drush mi MigrateCatamMenu
+
+//add in the index.html == / aliases
+drush php-script modules/migrate_maths/urls.php
+
+//remove all the stubs
+drush php-script modules/migrate_maths/delete-stubs.php

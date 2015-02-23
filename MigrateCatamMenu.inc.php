@@ -7,15 +7,15 @@
 
 class MigrateCatamMenu extends Migration {
   public $base_dir;
-  public $topnid = 176; // set manually....
+  public $topnid = 845; // set manually....
   public $partimp = 'undergrad/catam';
-  public $maindir = '/usr/local/www/cms/drupal/sites/www.maths.cam.ac.uk/files/pre2014/';
+  public $maindir = '/usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014/';
  
   /**
    * Constructor.
    */
-  public function __construct() {
-    parent::__construct();
+  public function __construct($arguments) {
+    parent::__construct($arguments);
     $this->map = new MigrateSQLMap($this->machineName,
         array(
           'sourceid' => array(

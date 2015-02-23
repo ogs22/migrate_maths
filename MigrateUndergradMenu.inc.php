@@ -7,15 +7,15 @@
 
 class MigrateUndergradMenu extends Migration {
   public $base_dir;
-  public $topnid = 35848; // set manually....
+  public $topnid = 197; // set manually....
   public $partimp = 'undergrad';
   public $maindir = '/tmp/www.maths.cam.ac.uk/files/pre2014/';
  
   /**
    * Constructor.
    */
-  public function __construct() {
-    parent::__construct();
+  public function __construct($arguments) {
+    parent::__construct($arguments);
     $this->map = new MigrateSQLMap($this->machineName,
         array(
           'sourceid' => array(

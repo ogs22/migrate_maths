@@ -4,7 +4,7 @@
 #clean up import dir
 
 
-cd /local/data/temp/htdocs-maths/undergrad/catam
+cd /usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014/undergrad/catam
 
 echo "<body><h1>DELETE ME</h1></body>" > import-index
 
@@ -25,3 +25,5 @@ rm docs
 rm -rf ./software/matlabinstall/RCS-backup
 
 rm data/index-backup.html
+
+rm index_questionmark.html

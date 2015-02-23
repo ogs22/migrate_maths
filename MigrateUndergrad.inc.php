@@ -7,8 +7,8 @@ class MigrateUndergrad extends Migration {
   /**
    * Constructor.
    */
-  public function __construct() {
-    parent::__construct();
+  public function __construct($arguments) {
+    parent::__construct($arguments);
 
     $this->map = new MigrateSQLMap($this->machineName,
         array(
@@ -44,8 +44,8 @@ class MigrateUndergrad extends Migration {
     // Map the fields, pretty straightforward in this case.
     $this->addFieldMapping('uid', 'uid');
     $this->addFieldMapping('title', 'title');
-    $this->addFieldMapping('body', 'body')
-      ->arguments(array('format' => 'full_html'));
+    $this->addFieldMapping('body', 'body');
+    $this->addFieldMapping('body:format')->defaultValue('full_html');
     $this->addFieldMapping('path', 'facpath');
     $this->addFieldMapping('pathauto', FALSE);
     

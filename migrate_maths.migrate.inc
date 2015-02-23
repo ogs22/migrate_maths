@@ -5,7 +5,7 @@ function migrate_maths_migrate_api() {
     'groups' => array(
       'wwwmaths' => array(
         'title' => t('maths faculty migrations'),
-      	'default_format' => 'filtered_html',
+      	'default_format' => 'full_html',
       ),
     ),
     'migrations' => array(
@@ -15,6 +15,14 @@ function migrate_maths_migrate_api() {
       ),
       'MigrateUndergradMenu' => array(
         'class_name' => 'MigrateUndergradMenu',
+        'group_name' => 'wwwmaths',
+      ),
+      'MigrateCatam' => array(
+        'class_name' => 'MigrateCatam',
+        'group_name' => 'wwwmaths',
+      ),
+      'MigrateCatamMenu' => array(
+        'class_name' => 'MigrateCatamMenu',
         'group_name' => 'wwwmaths',
       )
     ),
