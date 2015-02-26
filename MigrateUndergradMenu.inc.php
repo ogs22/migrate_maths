@@ -7,9 +7,9 @@
 
 class MigrateUndergradMenu extends Migration {
   public $base_dir;
-  public $topnid = 197; // set manually....
+  public $topnid = 1196; // set manually....
   public $partimp = 'undergrad';
-  public $maindir = '/tmp/www.maths.cam.ac.uk/files/pre2014/';
+  public $maindir = '/usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014/';
  
   /**
    * Constructor.
