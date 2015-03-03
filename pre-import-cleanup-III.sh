@@ -20,4 +20,4 @@ rm -rf postgrad/cca-testing
 
 rm -rf postgrad/index2.html
 
-
+rm computing/docs

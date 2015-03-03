@@ -175,7 +175,7 @@ class SourceParser {
         }
         //echo "'".$title."'\n";
         
-
+	$title = str_replace(array("\r", "\n"), "", $title);
 
         return $title;
     }
