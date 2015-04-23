@@ -89,8 +89,7 @@ class SourceParser {
         $html = str_ireplace('src="http', 'src-protect="http', $html); // stop ext links being rewriten
         $html = str_ireplace('src="/', 'src-protect="/', $html); // stop / links being rewritten
         $html = str_ireplace('src="', 
-        'src="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/',
-         $html); //rewrite paths
+        'src="'.$this->migration->linkedfiles.$path_parts['dirname'].'/',$html); //rewrite paths
         $html = str_replace('src-protect=', 'src=', $html); // rewrite protected srcs
 
         $this->html = $html;
@@ -103,22 +102,22 @@ class SourceParser {
         $html = str_ireplace('href="http', 'href-protect="http', $html); // stop external links being rewriten
         $html = str_ireplace('href="/', 'href-protect="/', $html); // stop absolute links being rewritten
         $html = preg_replace('/<a(.*)href="([^"]*pdf)"(.*)>/i',
-            '<a$1href-protect="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
+            '<a$1href-protect="'.$this->migration->linkedfiles.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
        $html = preg_replace('/<a(.*)href="([^"]*ps)"(.*)>/i',
-            '<a$1href-protect="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
+            '<a$1href-protect="'.$this->migration->linkedfiles.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
        $html = preg_replace('/<a(.*)href="([^"]*doc)"(.*)>/i',
-            '<a$1href-protect="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
+            '<a$1href-protect="'.$this->migration->linkedfiles.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
 
 
 
         $html = preg_replace('/<a(.*)href="([^"]*html)"(.*)>/i',
-            '<a$1href-protect="/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
+            '<a$1href-protect="/'.$path_parts['dirname'].'/$2"$3>',$html); //convert relative html links
         $html = preg_replace('/<a(.*)href="([^"]*#*)"(.*)>/i',
-            '<a$1href-protect="/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',$html); //convert anchors too
+            '<a$1href-protect="/'.$path_parts['dirname'].'/$2"$3>',$html); //convert anchors too
         
 
         $html = preg_replace('/<a(.*)href="([^"]*)"(.*)>/i',
-            '<a$1href-protect="/sites/www.maths.cam.ac.uk/files/pre2014/'.$this->migration->partimp.'/'.$path_parts['dirname'].'/$2"$3>',
+            '<a$1href-protect="'.$this->migration->linkedfiles.$path_parts['dirname'].'/$2"$3>',
             $html); //assume all else is pdf/doc etc stored in /sites/www.maths.cam.ac.uk/files/pre2014/
         $html = str_replace('href-protect="', 'href="', $html);  
         $this->html = $html;

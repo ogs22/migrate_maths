@@ -20,4 +20,14 @@ rm -rf postgrad/cca-testing
 
 rm -rf postgrad/index2.html
 
-rm computing/docs
+rm -rf undergrad/catam/calendar/ undergrad/catam/caltest/
+
+rm -rf undergrad/catam/ccatsl/manual*
+
+rm undergrad/catam/docs
+
+rm -rf undergrad/catam/software/matlabinstall/RCS-backup
+
+rm undergrad/catam/data/index-backup.html
+
+rm undergrad/catam/index_questionmark.html

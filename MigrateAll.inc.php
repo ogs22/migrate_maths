@@ -4,7 +4,8 @@ class MigrateAll extends Migration {
   public $base_dir;
   public $partimp = '/';
   public $maindir = '/usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014';
-  public $exclude = array("abaqus_docs","computing/windows/play/");
+  public $linkedfiles = '/sites/www.maths.cam.ac.uk/files/pre2014/';
+  public $exclude = array("abaqus_docs","computing/","/RCS");
   /**
    * Constructor.
    */
@@ -71,7 +72,7 @@ class MigrateAll extends Migration {
     $row->body = $source_parser->getBody();
  
     // The title is the filename.
-    $row->facpath = $this->partimp.substr($row->sourceid,1);
+    $row->facpath = substr($row->sourceid,1);
 echo $row->facpath."\n";
      foreach($this->exclude as $x) {
         if (strstr($row->facpath,$x)) {

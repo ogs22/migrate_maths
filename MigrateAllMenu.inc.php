@@ -11,7 +11,7 @@ class MigrateAllMenu extends Migration {
   public $partimp = '/';
   public $maindir = '/usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014';
   //public $exclude = array("undergrad/","abaqus_docs","computing/windows/play/pt3_feedback"); 
-  public $exclude = array("abaqus_docs","computing/windows/play/");
+  public $exclude = array("abaqus_docs","computing/","/RCS");
   /**
    * Constructor.
    */
@@ -74,7 +74,7 @@ class MigrateAllMenu extends Migration {
 
     $row->uid = 1;
     $source_parser = new SourceParser(substr($row->sourceid, 1), $row->filedata,$this);
-    $row->facpath = $this->partimp.substr($row->sourceid,1);
+    $row->facpath = substr($row->sourceid,1);
 
     $row->parentNID = $this->getParentNid($row->facpath);
     $row->ref_parent = $this->getParent($row->parentNID);
@@ -109,7 +109,7 @@ class MigrateAllMenu extends Migration {
       $rejoin = implode('/',$dirs).'/index.html';
       echo "\n".$htmlpath." looking for Parent:: ".$rejoin."\n";
       
-      if ($rejoin == "/index.html" or $rejoin == "//index.html") {
+      if ($rejoin == "/index.html" or $rejoin == "//index.html" or $rejoin == "./index.html") {
         $nid = $this->topnid; //top level page for this import
 	echo " Top level child nid:: ".$nid;
       } else {
