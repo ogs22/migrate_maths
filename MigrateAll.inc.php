@@ -28,7 +28,7 @@ class MigrateAll extends Migration {
             'body' => t('Body'),
             'uid' => t('User id'),
             'facpath' => t('the path'),
-	    'termname' => t('tags')
+            'termname' => t('tags')
         );
 
         $this->base_dir = $this->maindir . $this->partimp;
@@ -56,7 +56,6 @@ class MigrateAll extends Migration {
         $this->addFieldMapping('path', 'facpath');
         $this->addFieldMapping('pathauto', FALSE);
         $this->addFieldMapping('field_security', 'termname')->separator('|');
-	
     }
 
     /**
@@ -90,6 +89,33 @@ class MigrateAll extends Migration {
             $row->title = $row->sourceid;
         }
         $row->termname = "Community|Public";
+    }
+
+    public function determineSecurity($param) {
+        $editterms = array(
+            "Community",
+            "Internal",
+            "InternalAdmin",
+            "News",
+            "PostGrad",
+            "Research",
+            "UnderGrad"
+        );
+
+        /*
+         * So if the path matches ~editterm add that tag - editterms are editing groups
+         * 
+         */
+
+        $viewterms = array(
+            "Public",
+            "Raven",
+        );
+        
+        /*
+         * Beware viewterms as Public overrides Raven overrides GROUPX
+         */
+        
         
     }
 
