@@ -9,22 +9,6 @@ function migrate_maths_migrate_api() {
       ),
     ),
     'migrations' => array(
-      'MigrateUndergrad' => array(
-        'class_name' => 'MigrateUndergrad',
-        'group_name' => 'wwwmaths',
-      ),
-      'MigrateCatam' => array(
-        'class_name' => 'MigrateCatam',
-        'group_name' => 'wwwmaths',
-      ),
-      'MigrateCatamMenu' => array(
-        'class_name' => 'MigrateCatamMenu',
-        'group_name' => 'wwwmaths',
-      ),
-      'MigrateUndergradMenu' => array(
-        'class_name' => 'MigrateUndergradMenu',
-        'group_name' => 'wwwmaths',
-      ),
       'MigrateAll' => array(
         'class_name' => 'MigrateAll',
         'group_name' => 'wwwmaths',

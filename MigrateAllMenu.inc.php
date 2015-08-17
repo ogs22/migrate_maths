@@ -11,7 +11,7 @@ class MigrateAllMenu extends Migration {
   public $partimp = '/';
   public $maindir = '/usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014';
   //public $exclude = array("undergrad/","abaqus_docs","computing/windows/play/pt3_feedback"); 
-  public $exclude = array("abaqus_docs","computing/","/RCS");
+  public $exclude = array("abaqus_docs","/RCS","computing/windows/play");
   /**
    * Constructor.
    */
@@ -62,6 +62,11 @@ class MigrateAllMenu extends Migration {
     $this->addFieldMapping('p2', 'p2')->sourceMigration($this->getMachineName());
     $this->addFieldMapping('p3', 'p3')->sourceMigration($this->getMachineName());
     $this->addFieldMapping('p4', 'p4')->sourceMigration($this->getMachineName());
+    $this->addFieldMapping('p5', 'p5')->sourceMigration($this->getMachineName());
+    $this->addFieldMapping('p6', 'p6')->sourceMigration($this->getMachineName());
+    $this->addFieldMapping('p7', 'p7')->sourceMigration($this->getMachineName());
+    $this->addFieldMapping('p8', 'p8')->sourceMigration($this->getMachineName());
+    $this->addFieldMapping('p9', 'p9')->sourceMigration($this->getMachineName());
     $this->addFieldMapping('router_path')->defaultValue('node/%');
   }
  
@@ -75,14 +80,6 @@ class MigrateAllMenu extends Migration {
     $row->uid = 1;
     $source_parser = new SourceParser(substr($row->sourceid, 1), $row->filedata,$this);
     $row->facpath = substr($row->sourceid,1);
-
-    $row->parentNID = $this->getParentNid($row->facpath);
-    $row->ref_parent = $this->getParent($row->parentNID);
-    $row->nodepath = drupal_get_normal_path($row->facpath);
-    $row->link_title = $source_parser->getTitle($this->base_dir,$row->path);
-    if ($row->link_title == "") {
-        $row->link_title = $row->sourceid;
-    }
     echo $row->facpath."\n";
     foreach($this->exclude as $x) {
         if (strstr($row->facpath,$x)) {
@@ -90,6 +87,18 @@ class MigrateAllMenu extends Migration {
 	  return false;
         }
      }
+
+    $row->parentNID = $this->getParentNid($row->facpath);
+    if ($row->parentNID == "exclude") {
+       echo "\nexcluding because of depth!\n";
+       return false;
+    }
+    $row->ref_parent = $this->getParent($row->parentNID);
+    $row->nodepath = drupal_get_normal_path($row->facpath);
+    $row->link_title = $source_parser->getTitle($this->base_dir,$row->path);
+    if ($row->link_title == "") {
+        $row->link_title = $row->sourceid;
+    }
 
   }
 
@@ -105,6 +114,11 @@ class MigrateAllMenu extends Migration {
       $dirs = explode('/', $path_parts['dirname']);
       if ($path_parts['basename']=="index.html") {
         $me = array_pop($dirs);
+      }
+      echo "Depth:".count($dirs)."\n";
+      if (count($dirs)>9) {
+       //erk it will break?
+       //return "exclude";
       }
       $rejoin = implode('/',$dirs).'/index.html';
       echo "\n".$htmlpath." looking for Parent:: ".$rejoin."\n";
