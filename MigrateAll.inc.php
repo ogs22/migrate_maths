@@ -27,7 +27,8 @@ class MigrateAll extends Migration {
             'title' => t('Title'),
             'body' => t('Body'),
             'uid' => t('User id'),
-            'facpath' => t('the path')
+            'facpath' => t('the path'),
+	    'termname' => t('tags')
         );
 
         $this->base_dir = $this->maindir . $this->partimp;
@@ -54,9 +55,8 @@ class MigrateAll extends Migration {
         $this->addFieldMapping('body:format')->defaultValue('full_html');
         $this->addFieldMapping('path', 'facpath');
         $this->addFieldMapping('pathauto', FALSE);
-        $this->addFieldMapping('field_security', 'termname')->separator(',');
-        $this->addFieldMapping('field_security:create_term')
-                ->defaultValue(TRUE);
+        $this->addFieldMapping('field_security', 'termname')->separator('|');
+	
     }
 
     /**
@@ -89,7 +89,7 @@ class MigrateAll extends Migration {
         if ($row->title == "") {
             $row->title = $row->sourceid;
         }
-        $row->termname = 'Raven,Community';
+        $row->termname = "Community|Public";
         
     }
 
