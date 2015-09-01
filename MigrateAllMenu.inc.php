@@ -11,7 +11,7 @@ class MigrateAllMenu extends Migration {
   public $partimp = '/';
   public $maindir = '/usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014';
   //public $exclude = array("undergrad/","abaqus_docs","computing/windows/play/pt3_feedback"); 
-  public $exclude = array("abaqus_docs","/RCS","computing/windows/play");
+  public $exclude = array("/computing/","abaqus_docs", "/RCS");
   /**
    * Constructor.
    */

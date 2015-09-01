@@ -6,7 +6,7 @@ class MigrateAll extends Migration {
     public $partimp = '/';
     public $maindir = '/usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014';
     public $linkedfiles = '/sites/www.maths.cam.ac.uk/files/pre2014/';
-    public $exclude = array("abaqus_docs", "/RCS");
+    public $exclude = array("/computing/","abaqus_docs", "/RCS");
 
     /**
      * Constructor.
