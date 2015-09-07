@@ -93,9 +93,9 @@ class MigrateAll extends Migration {
     }
 
     public function determineSecurity($path) {
-        
-        $terms= array();
-        
+
+        $terms = array();
+
 //        $editterms = array(
 //            "Community",
 //            "Internal",
@@ -106,7 +106,7 @@ class MigrateAll extends Migration {
 //            "UnderGrad"
 //        );
 
-        $editmap = array (
+        $editmap = array(
             "about/community/" => "Community",
             "internal/" => "Internal",
             "news/" => "News",
@@ -115,43 +115,77 @@ class MigrateAll extends Migration {
             "undergrad/" => "UnderGrad",
             "undergradnst" => "UnderGrad"
         );
-        
+
         foreach ($editmap as $key => $value) {
             $pos = stripos($key, $path);
             if ($pos === false) {
                 //no match
-            } elseif ($pos == 0 ) {
+            } elseif ($pos == 0) {
                 $terms[] = $value;
                 break;
             }
         }
-        
-                
-                
-        
+
         /*
          * So if the path matches ~editterm add that tag - editterms are editing groups
          * 
          */
 
-        $viewterms = array(
-            "Public",
-            "Raven",
-            "Raven-cos",
-            "Raven-ms",
-            "Raven-catamadmin",
-            "Raven-cpac",
-            "Raven-damtpusers",
-            "Raven-dpmms"
+//        $viewterms = array(
+//            "Public",
+//            "Raven",
+//            "Raven-cos",
+//            "Raven-ms",
+//            "Raven-catamadmin",
+//            "Raven-cpac",
+//            "Raven-damtpusers",
+//            "Raven-dpmms"
+//        );
+
+        $viewmap = array(
+            "undergrad/catam/projects/" => "Raven-cpac",
+            "undergrad/catam/projects/AdminDocuments/" => "Raven-catamadmin",
+            "undergrad/catam/projects/AdminDocuments/MS-Temp/" => "Raven-ms",
+            "undergrad/catam/software/matlabinstall/" => "Raven",
+            "undergrad/catam/software/matlabSV-download/" => "Raven",
+            "undergrad/catam/Declarations/2014-15/II/" => "Raven",
+            "undergrad/catam/Declarations/2014-15/IB/" => "Raven",
+            "undergrad/catam/Declarations/2013-14/II/" => "Raven",
+            "undergrad/catam/Declarations/2013-14/IB/" => "Raven",
+            "undergrad/catam/Declarations/Current/II/" => "Raven",
+            "undergrad/catam/Declarations/Current/IB/" => "Raven",
+            "undergrad/studentsurvey/" => "Raven",
+            "nstmaths/" => "Raven",
+            /* "facultyboard/admissionscommittee/" => "Raven-", */
+            /* "facultyboard/mathsdos/" => "Raven-",      	    */
+            "facultyboard/meetings/" => "Raven",
+            "facultyboard/partiiicommittee/" => "Raven",
+            "internal/ref/" => "Raven",
+            "internal/email_lists/" => "Raven",
+            "internal/admin/RMASS/" => "Raven-damtp|Raven-dpmms",
+            "postgrad/mathiii/registration/" => "Raven",
+            "postgrad/mathiii/Declarations/2014-15/" => "Raven",
+            "postgrad/mphil/Declarations/2014-15/" => "Raven",
+            "postgrad/mathiii-archive2013-Sept27/mathiii/registration/" => "Raven",
         );
+
+        foreach ($viewmap as $key => $value) {
+            $pos = stripos($key, $path);
+            if ($pos === false) {
+                //no match
+            } elseif ($pos == 0) {
+                $terms[] = $value;
+                break;
+            }
+        }
 
         /*
          * Beware viewterms as Public overrides Raven overrides GROUPX
          */
-        
+
         $termpd = implode("|", $terms);
+        echo $termpd;
         return $termpd;
-        
     }
 
 }
