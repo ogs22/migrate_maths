@@ -6,7 +6,7 @@ class MigrateAll extends Migration {
     public $partimp = '/';
     public $maindir = '/usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014';
     public $linkedfiles = '/sites/www.maths.cam.ac.uk/files/pre2014/';
-    public $exclude = array("/computing/","abaqus_docs", "/RCS");
+    public $exclude = array("/computing/", "abaqus_docs", "/RCS");
 
     /**
      * Constructor.
@@ -88,20 +88,47 @@ class MigrateAll extends Migration {
         if ($row->title == "") {
             $row->title = $row->sourceid;
         }
-        $row->termname = "Community|Public";
+        //$row->termname = "Community|Public";
+        $row->termname = $this->determineSecurity($row->facpath);
     }
 
-    public function determineSecurity($param) {
-        $editterms = array(
-            "Community",
-            "Internal",
-            "InternalAdmin",
-            "News",
-            "PostGrad",
-            "Research",
-            "UnderGrad"
-        );
+    public function determineSecurity($path) {
+        
+        $terms= array();
+        
+//        $editterms = array(
+//            "Community",
+//            "Internal",
+//            "InternalAdmin",
+//            "News",
+//            "PostGrad",
+//            "Research",
+//            "UnderGrad"
+//        );
 
+        $editmap = array (
+            "about/community/" => "Community",
+            "internal/" => "Internal",
+            "news/" => "News",
+            "postgrad/" => "Postgrad",
+            "research/" => "Research",
+            "undergrad/" => "UnderGrad",
+            "undergradnst" => "UnderGrad"
+        );
+        
+        foreach ($editmap as $key => $value) {
+            $pos = stripos($key, $path);
+            if ($pos === false) {
+                //no match
+            } elseif ($pos == 0 ) {
+                $terms[] = $value;
+                break;
+            }
+        }
+        
+                
+                
+        
         /*
          * So if the path matches ~editterm add that tag - editterms are editing groups
          * 
@@ -110,12 +137,20 @@ class MigrateAll extends Migration {
         $viewterms = array(
             "Public",
             "Raven",
+            "Raven-cos",
+            "Raven-ms",
+            "Raven-catamadmin",
+            "Raven-cpac",
+            "Raven-damtpusers",
+            "Raven-dpmms"
         );
-        
+
         /*
          * Beware viewterms as Public overrides Raven overrides GROUPX
          */
         
+        $termpd = implode("|", $terms);
+        return $termpd;
         
     }
 
