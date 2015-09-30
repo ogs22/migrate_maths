@@ -6,7 +6,7 @@ class MigrateAll extends Migration {
     public $partimp = '/';
     public $maindir = '/usr/local/www/drupal/sites/www.maths.cam.ac.uk/files/pre2014';
     public $linkedfiles = '/sites/www.maths.cam.ac.uk/files/pre2014/';
-    public $exclude = array("/computing/", "abaqus_docs", "/RCS");
+    public $exclude = array("/computing/", "abaqus_docs", "RCS");
 
     /**
      * Constructor.
@@ -93,7 +93,7 @@ class MigrateAll extends Migration {
     }
 
     public function determineSecurity($path) {
-
+    	echo "testing security by:".$path;
         $terms = array();
 
 //        $editterms = array(
@@ -117,12 +117,11 @@ class MigrateAll extends Migration {
         );
 
         foreach ($editmap as $key => $value) {
-            $pos = stripos($key, $path);
+            $pos = stripos($path, $key);
             if ($pos === false) {
                 //no match
             } elseif ($pos == 0) {
                 $terms[] = $value;
-                break;
             }
         }
 
@@ -162,29 +161,36 @@ class MigrateAll extends Migration {
             "facultyboard/partiiicommittee/" => "Raven",
             "internal/ref/" => "Raven",
             "internal/email_lists/" => "Raven",
-            "internal/admin/RMASS/" => "Raven-damtp|Raven-dpmms",
+            "internal/admin/RMASS/" => "Raven-damtpusers|Raven-dpmms",
             "postgrad/mathiii/registration/" => "Raven",
             "postgrad/mathiii/Declarations/2014-15/" => "Raven",
             "postgrad/mphil/Declarations/2014-15/" => "Raven",
             "postgrad/mathiii-archive2013-Sept27/mathiii/registration/" => "Raven",
         );
 
+	$vterms= array();
+
         foreach ($viewmap as $key => $value) {
-            $pos = stripos($key, $path);
+            $pos = stripos($path, $key);
             if ($pos === false) {
                 //no match
             } elseif ($pos == 0) {
-                $terms[] = $value;
-                break;
+                $vterms[] = $value;
             }
         }
+
+	if ($vterms == array() ) {
+	   $vterms[] = "Public";
+	}
+
+	$allterms= array_merge($terms,$vterms);
 
         /*
          * Beware viewterms as Public overrides Raven overrides GROUPX
          */
 
-        $termpd = implode("|", $terms);
-        echo $termpd;
+        $termpd = implode("|", $allterms);
+        echo "\n".$termpd."\n";
         return $termpd;
     }
 
